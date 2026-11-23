@@ -13,9 +13,15 @@ ENTRY = (
 )
 
 
+def validate(text: str) -> None:
+    """Gate mirror: UTF-8 text, 1-240 chars, not only whitespace, one sentence."""
+    assert text == text.strip(), "entry has leading/trailing whitespace"
+    assert 1 <= len(text) <= 240, f"entry length {len(text)} out of range"
+    assert text.count(".") == 1, "entry must read as one clean sentence"
+
+
 def main() -> None:
-    assert 1 <= len(ENTRY) <= 240, f"entry length {len(ENTRY)} out of range"
-    assert ENTRY.strip() == ENTRY
+    validate(ENTRY)
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(ENTRY)
